@@ -12,7 +12,6 @@
         <param field="Address" label="IP Address" width="200px" required="true"/>
         <param field="Port" label="Port" width="75px" default="80"/>
         <param field="Mode1" label="Password" width="100px" default=""/>
-        <param field="Mode2" label="Device name" width="75px" default=""/>
         <param field="Mode4" label="Polling period [s]" width="75px" default="3"/>
         <param field="Mode6" label="Debug" width="150px">
             <options>
@@ -41,24 +40,36 @@ class BasePlugin:
     devices=[
         (0,"Grid Voltage L1","Voltage",0.1,"%.1f"),
         (1,"Grid Voltage L2","Voltage",0.1,"%.1f"),
-        (2,"Grid Voltage L2","Voltage",0.1,"%.1f"),
+        (2,"Grid Voltage L3","Voltage",0.1,"%.1f"),
         (3,"Output Current L1","Current (Single)",0.1,"%.1f"),
         (4,"Output Current L2","Current (Single)",0.1,"%.1f"),
         (5,"Output Current L3","Current (Single)",0.1,"%.1f"),
-        (6,"Output Power L1","Usage",1,"%d"),
-        (7,"Output Power L2","Usage",1,"%d"),
-        (8,"Output Power L3","Usage",1,"%d"),
+        (6,"Output Power L1","kWh",1,"%d;0"),
+        (7,"Output Power L2","kWh",1,"%d;0"),
+        (8,"Output Power L3","kWh",1,"%d;0"),
+        (9,"AC Output Power","kWh",1,"%d;0"),
         (10,"PV1 Voltage","Voltage",0.1,"%.1f"),
         (11,"PV2 Voltage","Voltage",0.1,"%.1f"),
         (12,"PV1 Current","Current (Single)",0.1,"%.1f"),
         (13,"PV2 Current","Current (Single)",0.1,"%.1f"),
-        (14,"PV1 Power","Usage",1,"%d"),
-        (15,"PV2 Power","Usage",1,"%d"),
+        (14,"PV1 Power","kWh",1,"%d;0"),
+        (15,"PV2 Power","kWh",1,"%d;0"),
         (16,"Grid Frequency","Custom:Hz",0.01,"%.2f"),
 #        (17,"Grid Frequency L2","Custom:Hz",0.01,"%.2f"),
 #        (18,"Grid Frequency L3","Custom:Hz",0.01,"%.2f"),
+        (46,"Solax system temperature 1","Temperature",1,"%d"),
+        (47,"Feed-in power","kWh",1,"%d;0"),
+        (54,"Solax system temperature 1","Temperature",1,"%d"),
+        (68,"Energy week?","Custom:kWh",1,"%d"),
+        (70,"Energy today","Custom:kWh",1,"%d"),
+        (80,"Energy2 week?","Custom:kWh",1,"%d"),
+        (82,"Energy2 today","Custom:kWh",1,"%d"),
+        (86,"Energy from grid / month","Custom:kWh",1,"%d"),
+        (88,"Energy from grid","Custom:kWh",1,"%d"),
+        (90,"Energy to grid today","Custom:kWh",1,"%d"),
+        (92,"Energy from grid today","243.33.0",1,"-1;%d"),
 
-        ( 9,"Unknown  9","Custom:??",1,"%d"),
+""" unused for the moment
         (19,"Unknown 19","Custom:??",1,"%d"),
         (20,"Unknown 20","Custom:??",1,"%d"),
         (21,"Unknown 21","Custom:??",1,"%d"),
@@ -86,15 +97,12 @@ class BasePlugin:
         (43,"Unknown 43","Custom:??",1,"%d"),
         (44,"Unknown 44","Custom:??",1,"%d"),
         (45,"Unknown 45","Custom:??",1,"%d"),
-        (46,"Unknown 46","Custom:??",1,"%d"),
-        (47,"Unknown 47","Custom:??",1,"%d"),
         (48,"Unknown 48","Custom:??",1,"%d"),
         (49,"Unknown 49","Custom:??",1,"%d"),
         (50,"Unknown 50","Custom:??",1,"%d"),
         (51,"Unknown 51","Custom:??",1,"%d"),
         (52,"Unknown 52","Custom:??",1,"%d"),
         (53,"Unknown 53","Custom:??",1,"%d"),
-        (54,"Unknown 54","Custom:??",1,"%d"),
         (55,"Unknown 55","Custom:??",1,"%d"),
         (56,"Unknown 56","Custom:??",1,"%d"),
         (57,"Unknown 57","Custom:??",1,"%d"),
@@ -108,9 +116,7 @@ class BasePlugin:
         (65,"Unknown 65","Custom:??",1,"%d"),
         (66,"Unknown 66","Custom:??",1,"%d"),
         (67,"Unknown 67","Custom:??",1,"%d"),
-        (68,"Unknown 68","Custom:??",1,"%d"),
         (69,"Unknown 69","Custom:??",1,"%d"),
-        (70,"Unknown 70","Custom:??",1,"%d"),
         (71,"Unknown 71","Custom:??",1,"%d"),
         (72,"Unknown 72","Custom:??",1,"%d"),
         (73,"Unknown 73","Custom:??",1,"%d"),
@@ -120,19 +126,13 @@ class BasePlugin:
         (77,"Unknown 77","Custom:??",1,"%d"),
         (78,"Unknown 78","Custom:??",1,"%d"),
         (79,"Unknown 79","Custom:??",1,"%d"),
-        (80,"Unknown 80","Custom:??",1,"%d"),
         (81,"Unknown 81","Custom:??",1,"%d"),
-        (82,"Unknown 82","Custom:??",1,"%d"),
         (83,"Unknown 83","Custom:??",1,"%d"),
         (84,"Unknown 84","Custom:??",1,"%d"),
         (85,"Unknown 85","Custom:??",1,"%d"),
-        (86,"Unknown 86","Custom:??",1,"%d"),
         (87,"Unknown 87","Custom:??",1,"%d"),
-        (88,"Unknown 88","Custom:??",1,"%d"),
         (89,"Unknown 89","Custom:??",1,"%d"),
-        (90,"Unknown 90","Custom:??",1,"%d"),
         (91,"Unknown 91","Custom:??",1,"%d"),
-        (92,"Unknown 92","Custom:??",1,"%d"),
         (93,"Unknown 93","Custom:??",1,"%d"),
         (94,"Unknown 94","Custom:??",1,"%d"),
         (95,"Unknown 95","Custom:??",1,"%d"),
@@ -140,10 +140,13 @@ class BasePlugin:
         (97,"Unknown 97","Custom:??",1,"%d"),
         (98,"Unknown 98","Custom:??",1,"%d"),
         (99,"Unknown 99","Custom:??",1,"%d"),
-        (100,"Unknown 100","Custom:??",1,"%d"),
+        (100,"Unknown 100","Custom:??",1,"%d"), 
         (101,"Unknown 101","Custom:??",1,"%d"),
         (102,"Unknown 102","Custom:??",1,"%d"),
-        (103,"Unknown 103","Custom:??",1,"%d"),
+"""
+
+        """ 
+        (103,"Unknown 103","Custom:??",1,"%d"), # all zeroes, only 167-170 are 257
         (104,"Unknown 104","Custom:??",1,"%d"),
         (105,"Unknown 105","Custom:??",1,"%d"),
         (106,"Unknown 106","Custom:??",1,"%d"),
@@ -207,10 +210,10 @@ class BasePlugin:
         (164,"Unknown 164","Custom:??",1,"%d"),
         (165,"Unknown 165","Custom:??",1,"%d"),
         (166,"Unknown 166","Custom:??",1,"%d"),
-        (167,"Unknown 167","Custom:??",1,"%d"),
-        (168,"Unknown 168","Custom:??",1,"%d"),
-        (169,"Unknown 169","Custom:??",1,"%d"),
-        (170,"Unknown 170","Custom:??",1,"%d"),
+        (167,"Unknown 167","Custom:??",1,"%d"), # 257
+        (168,"Unknown 168","Custom:??",1,"%d"), # 257
+        (169,"Unknown 169","Custom:??",1,"%d"), # 257
+        (170,"Unknown 170","Custom:??",1,"%d"), # 257
         (171,"Unknown 171","Custom:??",1,"%d"),
         (172,"Unknown 172","Custom:??",1,"%d"),
         (173,"Unknown 173","Custom:??",1,"%d"),
@@ -295,7 +298,7 @@ class BasePlugin:
         (252,"Unknown 252","Custom:??",1,"%d"),
         (253,"Unknown 253","Custom:??",1,"%d"),
         (254,"Unknown 254","Custom:??",1,"%d")
-  
+  """
 
         ]
 #    devices=[] # uncomment it to clear all devices
@@ -340,7 +343,6 @@ class BasePlugin:
     def onStart(self):        
         Domoticz.Log("onStart - solax Plugin is starting.")
         self.password = Parameters["Mode1"]
-        devname = Parameters["Mode2"]
         self.period=int(Parameters["Mode4"])
         Domoticz.Heartbeat(self.period)
         if Parameters["Mode6"] != "0":
@@ -348,11 +350,16 @@ class BasePlugin:
             DumpConfigToLog()
         dev_exists={}
         for (unit,name,type,mul,formt) in self.devices:
-            fullname= devname+" "+name if devname else name
-            Domoticz.Debug("creating device %d %s" % (unit, fullname))
+            Domoticz.Debug("creating device %d %s" % (unit, name))
 #            Domoticz.Device(fullname, Unit=unit+1, TypeName="Custom", Used=1).Create()
             type=type.split(':')[0]
-            Domoticz.Device(fullname, Unit=unit+1, TypeName=type, Used=1).Create()
+            if re.match(r"^\d+\.\d+(\.\d+)?$",type):
+                (maintype,subtype,stype)=type.split(".")
+                Domoticz.Log("creating device %d %s %s %s %s" % (unit, name, maintype, subtype, stype)) 
+                Domoticz.Device(name, Unit=unit+1, Type=int(maintype), Subtype=int(subtype), Switchtype=int(stype), Used=1).Create()
+            else:
+                Domoticz.Device(name, Unit=unit+1, TypeName=type, Used=1, Options={"EnergyMeterMode": 1}).Create()
+#            http://domoticz.radiomaterial.com:8080/json.htm?type=setused&idx=561&name=Kulna%20-%20AC%20Output%20Power&description=&switchtype=0&EnergyMeterMode=1&customimage=0&used=true
             dev_exists[unit]=True
         for unit in range(0,300):
             if unit in dev_exists: continue
