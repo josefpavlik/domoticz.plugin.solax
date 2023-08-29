@@ -303,7 +303,6 @@ class BasePlugin:
         (253,"Unknown 253","Custom:??",1,"%d"),
         (254,"Unknown 254","Custom:??",1,"%d")
   """
-  """
 
         ]
 #    devices=[] # uncomment it to clear all devices
