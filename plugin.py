@@ -44,30 +44,30 @@ class BasePlugin:
         (3,"Output Current L1","Current (Single)",0.1,"%.1f"),
         (4,"Output Current L2","Current (Single)",0.1,"%.1f"),
         (5,"Output Current L3","Current (Single)",0.1,"%.1f"),
-        (6,"Output Power L1","kWh",1,"%d;0"),
-        (7,"Output Power L2","kWh",1,"%d;0"),
-        (8,"Output Power L3","kWh",1,"%d;0"),
-        (9,"AC Output Power","kWh",1,"%d;0"),
+        (6,"Output Power L1","kWh:Computed",1,"%d;0"),
+        (7,"Output Power L2","kWh:Computed",1,"%d;0"),
+        (8,"Output Power L3","kWh:Computed",1,"%d;0"),
+        (9,"Generated Output Power","kWh:Computed",1,"%d;0"),
         (10,"PV1 Voltage","Voltage",0.1,"%.1f"),
         (11,"PV2 Voltage","Voltage",0.1,"%.1f"),
         (12,"PV1 Current","Current (Single)",0.1,"%.1f"),
         (13,"PV2 Current","Current (Single)",0.1,"%.1f"),
-        (14,"PV1 Power","kWh",1,"%d;0"),
-        (15,"PV2 Power","kWh",1,"%d;0"),
+        (14,"PV1 Power","kWh:Computed",1,"%d;0"),
+        (15,"PV2 Power","kWh:Computed",1,"%d;0"),
         (16,"Grid Frequency","Custom:Hz",0.01,"%.2f"),
 #        (17,"Grid Frequency L2","Custom:Hz",0.01,"%.2f"),
 #        (18,"Grid Frequency L3","Custom:Hz",0.01,"%.2f"),
         (46,"Solax system temperature 1","Temperature",1,"%d"),
-        (47,"Feed-in power","kWh",1,"%d;0"),
+        (47,"House Load (total)","kWh:Computed",1,"%d;0"),
         (54,"Solax system temperature 1","Temperature",1,"%d"),
-        (68,"Energy week?","Custom:kWh",1,"%d"),
-        (70,"Energy today","Custom:kWh",1,"%d"),
-        (80,"Energy2 week?","Custom:kWh",1,"%d"),
-        (82,"Energy2 today","Custom:kWh",1,"%d"),
-        (86,"Energy from grid / month","Custom:kWh",1,"%d"),
-        (88,"Energy from grid","Custom:kWh",1,"%d"),
-        (90,"Energy to grid today","Custom:kWh",1,"%d"),
-        (92,"Energy from grid today","243.33.0",1,"-1;%d"),
+        (68,"Generated Energy /?","Custom:kWh",1,"%d"),
+        (70,"Generated Energy Today","Custom:kWh",1,"%d"),
+        (80,"Generated Energy Higher /?","Custom:kWh",1,"%d"),
+        (82,"Generated Energy Highher Today","Custom:kWh",1,"%d"),
+        (86,"Energy to Grid /?","Custom:kWh",1,"%d"),
+        (88,"Energy from Grid /?","Custom:kWh",1,"%d"),
+        (90,"Energy to Grid Today","Custom:kWh",1,"%d"),
+        (92,"Energy from Grid Today","243.33.0",1,"-1;%d"),
 
 """ unused for the moment
         (19,"Unknown 19","Custom:??",1,"%d"),
@@ -358,8 +358,7 @@ class BasePlugin:
                 Domoticz.Log("creating device %d %s %s %s %s" % (unit, name, maintype, subtype, stype)) 
                 Domoticz.Device(name, Unit=unit+1, Type=int(maintype), Subtype=int(subtype), Switchtype=int(stype), Used=1).Create()
             else:
-                Domoticz.Device(name, Unit=unit+1, TypeName=type, Used=1, Options={"EnergyMeterMode": 1}).Create()
-#            http://domoticz.radiomaterial.com:8080/json.htm?type=setused&idx=561&name=Kulna%20-%20AC%20Output%20Power&description=&switchtype=0&EnergyMeterMode=1&customimage=0&used=true
+                Domoticz.Device(name, Unit=unit+1, TypeName=type, Used=1).Create()
             dev_exists[unit]=True
         for unit in range(0,300):
             if unit in dev_exists: continue
@@ -426,8 +425,10 @@ class BasePlugin:
                 val=reg[unit]*mul
                 Domoticz.Log("solax device %d = %f" % (unit,val))
                 jednotka="" if ":" not in type else type.split(":")[1]
-                Devices[unit+1].Update(0,format % val, Options={'Custom': '1;'+jednotka} )
-#                Devices[unit+1].Update(0,format % val )
+                if jednotka=='Computed':
+                    Devices[unit+1].Update(0,format % val, Options={'EnergyMeterMode': '1' } )
+                else:
+                    Devices[unit+1].Update(0,format % val, Options={'Custom': '1;'+jednotka} )
         elif (Status == 400):
             Domoticz.Error("selv returned a Bad Request Error.")
         elif (Status == 500):
