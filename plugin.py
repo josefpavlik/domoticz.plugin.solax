@@ -214,6 +214,10 @@ class BasePlugin:
         (168,"Unknown 168","Custom:??",1,"%d"), # 257
         (169,"Unknown 169","Custom:??",1,"%d"), # 257
         (170,"Unknown 170","Custom:??",1,"%d"), # 257
+        (167,"Unknown 167","Custom:??",1,"%d"), # 257
+        (168,"Unknown 168","Custom:??",1,"%d"), # 257
+        (169,"Unknown 169","Custom:??",1,"%d"), # 257
+        (170,"Unknown 170","Custom:??",1,"%d"), # 257
         (171,"Unknown 171","Custom:??",1,"%d"),
         (172,"Unknown 172","Custom:??",1,"%d"),
         (173,"Unknown 173","Custom:??",1,"%d"),
@@ -298,6 +302,7 @@ class BasePlugin:
         (252,"Unknown 252","Custom:??",1,"%d"),
         (253,"Unknown 253","Custom:??",1,"%d"),
         (254,"Unknown 254","Custom:??",1,"%d")
+  """
   """
 
         ]
